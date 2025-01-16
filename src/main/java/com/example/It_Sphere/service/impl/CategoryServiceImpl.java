@@ -17,9 +17,14 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     @Override
     public String addCategory(String category) {
+        if (categoryRepository.findByName(category.toUpperCase()).isPresent()) {
+            throw new CustomException("Category found", HttpStatus.CONFLICT);
+        }
+
         Category eventCategory = new Category();
         eventCategory.setName(category.toUpperCase());
         categoryRepository.save(eventCategory);
+
         return eventCategory.getName();
     }
 
@@ -30,8 +35,15 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public String updateCategory(String category, Long id) {
+
+        if (categoryRepository.findByName(category.toUpperCase()).isPresent()) {
+            throw new CustomException("Category found", HttpStatus.CONFLICT);
+        }
+
         Category eventCategory = categoryRepository.findById(id).orElseThrow(() -> new CustomException("Category not found", HttpStatus.NOT_FOUND));
         eventCategory.setName(category.toUpperCase());
+        categoryRepository.save(eventCategory);
+
         return eventCategory.getName();
     }
 
