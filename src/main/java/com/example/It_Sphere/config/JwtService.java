@@ -1,10 +1,15 @@
 package com.example.It_Sphere.config;
 
+import com.example.It_Sphere.exception.CustomException;
+import com.example.It_Sphere.model.domain.User;
+import com.example.It_Sphere.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +19,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class JwtService {
+    private final UserRepository userRepository;
+
     @Value("${jwt.secret-key}")
     private String secretKey;
     @Value("${jwt.expiration}")
@@ -48,6 +56,12 @@ public class JwtService {
 
     public String getUserEmailFromToken(String token) {
         return getClaimsFromToken(token).getSubject();
+    }
+
+    public User getUserFromToken(String token) {
+        token = token.substring(7);
+
+        return userRepository.findByEmail(getUserEmailFromToken(token)).orElseThrow(() -> new CustomException("User not found", HttpStatus.NOT_FOUND));
     }
 
     private Key getSignInKey() {
