@@ -30,7 +30,10 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<String>> getAllCategories() {
-        return new ResponseEntity<>(categoryService.getAllCategories(), HttpStatus.OK);
+    public ResponseEntity<List<String>> getAllCategories(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        return new ResponseEntity<>(categoryService.getAllCategories(page, size), HttpStatus.OK);
     }
 }

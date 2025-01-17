@@ -5,6 +5,7 @@ import com.example.It_Sphere.model.domain.Category;
 import com.example.It_Sphere.repository.CategoryRepository;
 import com.example.It_Sphere.service.CategoryService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -48,9 +49,9 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<String> getAllCategories() {
+    public List<String> getAllCategories(int page, int size) {
         List<String> categories = new ArrayList<>();
-        List<Category> eventCategories = categoryRepository.findAll();
+        List<Category> eventCategories = categoryRepository.findAll(PageRequest.of(page, size)).toList();
 
         for (Category category : eventCategories) {
             categories.add(category.getName());
