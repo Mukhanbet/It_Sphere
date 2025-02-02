@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "materials")
@@ -14,8 +15,10 @@ public class Material {
     private Long id;
 
     private String title;
-    // todo: Use for this column an aws
     private String content;
     private String tags;
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "material", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MyFile> myFiles;
 }
