@@ -10,6 +10,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/feedbacks")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class FeedbackController {
     private final FeedbackService feedbackService;
 

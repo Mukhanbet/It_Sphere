@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/materials")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class MaterialController {
     private final MaterialService materialService;
 
