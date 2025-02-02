@@ -27,6 +27,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse register(RegisterRequest request) {
+        if (!request.getPassword().equals(request.getConfirmPassword())) {
+            throw new CustomException("Password is not match", HttpStatus.BAD_REQUEST);
+        }
         if(userRepository.findByEmail(request.getEmail()).isPresent()){
             throw new CustomException("User not found", HttpStatus.NOT_FOUND);
         }
